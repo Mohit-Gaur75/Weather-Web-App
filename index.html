@@ -1,28 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherDash</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-    <div class="app">
-        <h2>Weather App 🌦️</h2>
+  
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
 
-        <div class="search-box">
-            <input id="city-input" type="text" placeholder="Enter city name">
-            <button id="search-button">Search</button>
+  <div class="app-shell">
+
+    
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">WeatherDash</span>
+      </div>
+
+      <div class="search-wrap">
+        <input type="text" id="cityInput" class="search-input" placeholder="Search city…" autocomplete="off" />
+        <button id="searchBtn" class="search-btn" title="Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      </div>
+
+      <button id="geoBtn" class="geo-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+        </svg>
+        Use my location
+      </button>
+
+    
+      <div class="recent-section">
+        <p class="section-label">Recent Searches</p>
+        <ul id="recentList" class="recent-list"></ul>
+      </div>
+
+      
+      <div class="unit-toggle-wrap">
+        <span class="toggle-label">°C</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="unitToggle" />
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="toggle-label">°F</span>
+      </div>
+    </aside>
+
+    
+    <main class="main-content">
+
+      
+      <section class="hero-card" id="heroCard">
+        <div class="hero-left">
+          <p class="hero-city" id="cityName">—</p>
+          <p class="hero-date" id="currentDate">—</p>
+          <div class="hero-temp-row">
+            <span class="hero-temp" id="currentTemp">—</span>
+            <span class="hero-unit" id="tempUnit">°C</span>
+          </div>
+          <p class="hero-desc" id="weatherDesc">—</p>
+          <div class="hero-badges">
+            <span class="badge" id="feelsLike">Feels like —</span>
+            <span class="badge" id="weatherBadge">—</span>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="weather-icon-big" id="mainWeatherIcon">⛅</div>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <span id="humidity">—%</span>
+              <span class="stat-label">Humidity</span>
+            </div>
+            <div class="stat-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>
+              <span id="windSpeed">— km/h</span>
+              <span class="stat-label">Wind</span>
+            </div>
+            <div class="stat-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <span id="visibility">— km</span>
+              <span class="stat-label">Visibility</span>
+            </div>
+            <div class="stat-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span id="pressure">— hPa</span>
+              <span class="stat-label">Pressure</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <section class="section-card">
+        <div class="section-header">
+          <span class="section-title">Hourly Forecast</span>
+          <span class="section-sub" id="hourlySubtitle">Today's temperature trend</span>
+        </div>
+        <div class="hourly-scroll" id="hourlyScroll">
+          <div class="hourly-chart-wrap">
+            <canvas id="hourlyChart" height="130"></canvas>
+          </div>
+          <div class="hourly-cards" id="hourlyCards"></div>
+        </div>
+      </section>
+
+      
+      <section class="section-card">
+        <div class="section-header">
+          <span class="section-title">5-Day Forecast</span>
+        </div>
+        <div class="forecast-grid" id="forecastGrid"></div>
+      </section>
+
+      
+      <div class="details-row">
+        <div class="detail-card" id="sunCard">
+          <p class="detail-label">Sunrise / Sunset</p>
+          <div class="sun-row">
+            <span>🌅 <span id="sunriseTime">—</span></span>
+            <div class="sun-arc-wrap">
+              <svg class="sun-arc" viewBox="0 0 100 50">
+                <path d="M5,45 Q50,-10 95,45" fill="none" stroke="#e8a020" stroke-width="1.5" stroke-dasharray="4 2"/>
+                <circle id="sunDot" cx="50" cy="5" r="4" fill="#e8a020"/>
+              </svg>
+            </div>
+            <span>🌇 <span id="sunsetTime">—</span></span>
+          </div>
         </div>
 
-        <div class="weather-card">
-            <h3 id="city-name">City, Region, Country</h3>
-            <h6 id="city-time">Local Time</h6>
-            <p id="city-temp">-- °C</p>
+        <div class="detail-card" id="uviCard">
+          <p class="detail-label">UV Index</p>
+          <div class="uvi-display">
+            <span class="uvi-number" id="uviValue">—</span>
+            <span class="uvi-tag" id="uviTag">—</span>
+          </div>
+          <div class="uvi-bar-bg"><div class="uvi-bar-fill" id="uviFill"></div></div>
         </div>
-    </div>
 
-    <script src="script.js"></script>
+        <div class="detail-card" id="cloudCard">
+          <p class="detail-label">Cloud Cover</p>
+          <div class="cloud-display">
+            <svg width="48" height="36" viewBox="0 0 48 36" id="cloudSvg">
+              <ellipse cx="18" cy="26" rx="15" ry="8" fill="currentColor" opacity="0.15"/>
+              <ellipse cx="30" cy="26" rx="12" ry="8" fill="currentColor" opacity="0.25"/>
+              <ellipse cx="24" cy="20" rx="11" ry="8" fill="currentColor" opacity="0.4"/>
+            </svg>
+            <span class="cloud-pct" id="cloudPct">—%</span>
+          </div>
+          <p class="detail-sub" id="cloudDesc">—</p>
+        </div>
+
+        <div class="detail-card" id="dewCard">
+          <p class="detail-label">Dew Point</p>
+          <div class="dew-display">
+            <span class="dew-value" id="dewPoint">—</span>
+            <span class="dew-unit">°</span>
+          </div>
+          <p class="detail-sub" id="dewDesc">—</p>
+        </div>
+      </div>
+
+     
+      <div class="overlay-state" id="loadingState">
+        <div class="spinner"></div>
+        <p>Fetching weather…</p>
+      </div>
+      <div class="overlay-state hidden" id="errorState">
+        <span class="error-icon">⚠</span>
+        <p id="errorMsg">City not found.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
